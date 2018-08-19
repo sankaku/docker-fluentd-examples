@@ -1,0 +1,27 @@
+version: '3'
+services:
+  fluentd:
+    build: ./fluentd
+    image: docker-fluentd-examples-nginx2bq-fluentd
+    container_name: docker-fluentd-examples-nginx2bq-fluentd-container
+    volumes:
+      - "./fluentd/log:/fluentd/log"
+      - "./fluentd/my_fluentd.conf:/fluentd/etc/my_fluentd.conf"
+      - "./nginx/log:/var/log/nginx"
+      - "./secret_key:/secret_key"
+    environment:
+      FLUENTD_OPT: "-v"
+      FLUENTD_CONF: "my_fluentd.conf"
+      TZ: "Asia/Tokyo"
+
+  nginx:
+    build: ./nginx
+    image: docker-fluentd-examples-nginx2bq-nginx
+    container_name: docker-fluentd-examples-nginx2bq-nginx-container
+    ports:
+      - "80:80"
+    environment:
+      TZ: "Asia/Tokyo"
+    volumes:
+      - "./nginx/log:/var/log/nginx"
+

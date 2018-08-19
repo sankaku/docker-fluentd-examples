@@ -1,0 +1,26 @@
+version: '3'
+services:
+  fluentd:
+    build: ./fluentd
+    image: docker-fluentd-examples-nginx2file-fluentd
+    container_name: docker-fluentd-examples-nginx2file-fluentd-container
+    volumes:
+      - "./fluentd/log:/fluentd/log"
+      - "./fluentd/my_fluentd.conf:/fluentd/etc/my_fluentd.conf"
+      - "./nginx/log:/var/log/nginx"
+    environment:
+      FLUENTD_OPT: "-vv"
+      FLUENTD_CONF: "my_fluentd.conf"
+      TZ: "Asia/Tokyo"
+
+  nginx:
+    build: ./nginx
+    image: docker-fluentd-examples-nginx2file-nginx
+    container_name: docker-fluentd-examples-nginx2file-nginx-container
+    ports:
+      - "80:80"
+    environment:
+      TZ: "Asia/Tokyo"
+    volumes:
+      - "./nginx/log:/var/log/nginx"
+

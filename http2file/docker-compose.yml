@@ -1,0 +1,16 @@
+version: '3'
+services:
+  fluentd:
+    build: ./fluentd
+    image: docker-fluentd-examples-http2file-fluentd
+    container_name: docker-fluentd-examples-http2file-fluentd-container
+    volumes:
+      - "./fluentd/log:/fluentd/log"
+      - "./fluentd/my_fluentd.conf:/fluentd/etc/my_fluentd.conf"
+    ports:
+      - "9880:9880"
+    environment:
+      FLUENTD_OPT: "-vv"
+      FLUENTD_CONF: "my_fluentd.conf"
+      TZ: "Asia/Tokyo"
+

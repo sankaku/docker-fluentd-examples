@@ -1,0 +1,39 @@
+version: '3'
+services:
+  fluentd:
+    build: ./fluentd
+    image: docker-fluentd-examples-nginx2mysql-fluentd
+    container_name: docker-fluentd-examples-nginx2mysql-fluentd-container
+    volumes:
+      - "./fluentd/log:/fluentd/log"
+      - "./fluentd/my_fluentd.conf:/fluentd/etc/my_fluentd.conf"
+      - "./nginx/log:/var/log/nginx"
+    environment:
+      FLUENTD_OPT: "-vv"
+      FLUENTD_CONF: "my_fluentd.conf"
+      TZ: "Asia/Tokyo"
+
+  nginx:
+    build: ./nginx
+    image: docker-fluentd-examples-nginx2mysql-nginx
+    container_name: docker-fluentd-examples-nginx2mysql-nginx-container
+    ports:
+      - "80:80"
+    environment:
+      TZ: "Asia/Tokyo"
+    volumes:
+      - "./nginx/log:/var/log/nginx"
+
+  mysql:
+    build: ./mysql
+    image: docker-fluentd-examples-nginx2mysql-mysql
+    container_name: docker-fluentd-examples-nginx2mysql-mysql-container
+    volumes:
+      - "./mysql/db:/var/lib/mysql"
+      - "./mysql/log:/var/log/mysql"
+      - "./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypassword
+      - MYSQL_DATABASE=mydb
+    ports:
+      - "3306:3306"
