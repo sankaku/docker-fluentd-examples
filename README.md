@@ -11,8 +11,7 @@ dockerを使ってfluentd(v1.2)を試した。
   [nginx2bq](./nginx2bq)
 
 ## 必要なもの
-+ docker
-+ docker-compose
++ docker-compose(version 3)
 
 ## 実行方法など
 各ディレクトリ内のREADMEを参照
